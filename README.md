@@ -32,6 +32,9 @@ Notering 2: fullständig sökväg läggs till för uppladdade bildfiler.
 }
 ```
 
+/api/logout - loggar ut användare (utifrån Token)
+
+
 GET: /api/news -> Lista med nyheter (lägger till author med namn) 
 GET: /api/news/id -> specifik post utifrån id
 
