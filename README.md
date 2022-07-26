@@ -23,8 +23,9 @@ Notering 2: fullständig sökväg läggs till för uppladdade bildfiler.
     "password" : "password"
 }
 ```
-```json
+
 /api/login - loggar in (returnerar konto + token)
+```json
 {
     "email" : "mattias.dahlgren@miun.se",
     "password" : "password"
