@@ -16,17 +16,20 @@ Notering 2: fullständig sökväg läggs till för uppladdade bildfiler.
 
 ## Routes
 /api/register - registrerar konto (returnerar konto + token)
+```json
 {
     "name" : "Mattias Dahlgren",
     "email" : "mattias.dahlgren@miun.se",
     "password" : "password"
 }
-
+```
+```json
 /api/login - loggar in (returnerar konto + token)
 {
     "email" : "mattias.dahlgren@miun.se",
     "password" : "password"
 }
+```
 
 GET: /api/news -> Lista med nyheter (lägger till author med namn) 
 GET: /api/news/id -> specifik post utifrån id
