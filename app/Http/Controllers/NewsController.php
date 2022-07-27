@@ -55,12 +55,20 @@ class NewsController extends Controller
         $data = $request->all();        
 
         // Image upload
-        if($request->hasFile('image')) {
+        if($request->hasFile('image')) {            
+
             $image = $request->file('image');
+            $filesize = $request->file('image')->getSize();
+
+            if($filesize > 1999999) {
+                return response()->json([
+                    'Filesize to large (max 2Mb)'
+                ], 422);
+            }
+
             $imageName = $image->getClientOriginalName();
             $image->move(public_path('images'), $imageName);
-            //$data['image'] = $imageName;
-            $data['image'] = public_path('images') . "/" . $imageName;           
+            $data['image'] = $imageName;     
         }
 
         // Stored logged in user id
