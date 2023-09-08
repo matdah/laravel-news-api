@@ -1,6 +1,14 @@
 # Laravel News API
 Ett enklare API för att hantera nyheter, med auth - register/login med plain text token.
 
+## Installation
+* Ändra inställningarna i .env-filen, alternativ skapa samma db/user/pass
+* Kör: composer install
+* Kör: php artisan key:generate
+* Kör: php artisan migrate
+* Starta med: php artisan serve
+Körs på port: 8000
+
 ## Tabell: news
 Lagrar:
 * id
