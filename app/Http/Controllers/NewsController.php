@@ -56,14 +56,18 @@ class NewsController extends Controller
 
         // Image upload
         if($request->hasFile('image')) {            
+            $request->validate([
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust validation rules as needed
+            ]);
+
             $image = $request->file('image');
             $filesize = $request->file('image')->getSize();
 
-            if($filesize > 1999999) {
-                return response()->json([
-                    'Filesize to large (max 2Mb)'
-                ], 422);
-            }
+            // if($filesize > 1999999) {
+            //     return response()->json([
+            //         'Filesize to large (max 2Mb)'
+            //     ], 422);
+            // }
 
             // Generate a unique name for the image
             $imageName = time() . '.' . $image->getClientOriginalExtension();
