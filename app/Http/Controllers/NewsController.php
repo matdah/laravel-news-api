@@ -24,6 +24,9 @@ class NewsController extends Controller
             $user = User::where('id', $item->users_id)->first();
             $name = $user->name;
 
+            // Format output date as 2023-01-01 12.15
+            $date = date('Y-m-d H:i', strtotime($item->created_at));
+
             array_push($data, [
                 'id' => $item->id,
                 'title' => $item->title,
@@ -31,7 +34,7 @@ class NewsController extends Controller
                 'image' => $item->image,
                 'author' => $name,
                 'users_id' => $item->users_id,
-                'created_at' => $item->created_at,
+                'created_at' => $date,
                 'updated_at' => $item->updated_at
             ]);
         }       
