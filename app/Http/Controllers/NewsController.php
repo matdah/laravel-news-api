@@ -56,7 +56,6 @@ class NewsController extends Controller
 
         // Image upload
         if($request->hasFile('image')) {            
-            $destination_path = "public/images";
             $image = $request->file('image');
             $filesize = $request->file('image')->getSize();
 
@@ -66,11 +65,17 @@ class NewsController extends Controller
                 ], 422);
             }
 
-            $imageName = $image->getClientOriginalName();
-            //$image->move(public_path('images'), $imageName);
-            $path = $request->file('image')->storeAs($destination_path, $imageName);
-            //$data['image'] = $imageName;   
-            $data['image'] = $imageName;  
+            // Generate a unique name for the image
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+
+            // Move the uploaded image to a storage directory
+            $image->move(public_path('uploads'), $imageName);
+
+            // Create the URL for the uploaded image
+            $imageUrl = asset('uploads/' . $imageName);
+
+            // Add image to data array
+            $data['image'] = $imageUrl;  
         }
 
         // Stored logged in user id
