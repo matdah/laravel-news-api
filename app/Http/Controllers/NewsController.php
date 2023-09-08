@@ -63,12 +63,6 @@ class NewsController extends Controller
             $image = $request->file('image');
             $filesize = $request->file('image')->getSize();
 
-            // if($filesize > 1999999) {
-            //     return response()->json([
-            //         'Filesize to large (max 2Mb)'
-            //     ], 422);
-            // }
-
             // Generate a unique name for the image
             $imageName = time() . '.' . $image->getClientOriginalExtension();
 
