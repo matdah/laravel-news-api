@@ -16,10 +16,17 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::resource('news', NewsController::class)->middleware('auth:sanctum');
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+// Restricted routes that require authentication
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('news', [NewsController::class, 'store']); // Create
+    Route::put('news/{id}', [NewsController::class, 'update']); // Update
+    Route::delete('news/{id}', [NewsController::class, 'destroy']); // Delete
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
 
-// Public route
+// Public routes
+Route::get('news', [NewsController::class, 'index']); // Index
+Route::get('news/{id}', [NewsController::class, 'show']); // Show
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
