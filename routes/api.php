@@ -20,8 +20,11 @@ use App\Http\Controllers\AuthController;
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('news', [NewsController::class, 'store']); // Create
     Route::put('news/{id}', [NewsController::class, 'update']); // Update
+    Route::post('news/{id}', [NewsController::class, 'updatePost']); // Update image (optional)
+    Route::post('news/image/{id}', [NewsController::class, 'updateImage']); // Update image (optional)
     Route::delete('news/{id}', [NewsController::class, 'destroy']); // Delete
     Route::post('/logout', [AuthController::class, 'logout']);
+
 });
 
 // Public routes

@@ -33,11 +33,10 @@ class NewsController extends Controller
                 'content' => $item->content,
                 'image' => $item->image,
                 'author' => $name,
-                'users_id' => $item->users_id,
                 'created_at' => $date,
                 'updated_at' => $item->updated_at
             ]);
-        }       
+        }
 
         return $data;
     }
@@ -55,10 +54,10 @@ class NewsController extends Controller
             'content' => 'required'
         ]);
 
-        $data = $request->all();        
+        $data = $request->all();
 
         // Image upload
-        if($request->hasFile('image')) {            
+        if ($request->hasFile('image')) {
             $request->validate([
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust validation rules as needed
             ]);
@@ -76,7 +75,7 @@ class NewsController extends Controller
             $imageUrl = asset('uploads/' . $imageName);
 
             // Add image to data array
-            $data['image'] = $imageUrl;  
+            $data['image'] = $imageUrl;
         }
 
         // Stored logged in user id
@@ -113,6 +112,8 @@ class NewsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        var_dump($id);
+        var_dump($request->all());
         $news = News::find($id);
 
         if ($news != null) {
@@ -121,7 +122,97 @@ class NewsController extends Controller
                 'content' => 'required'
             ]);
 
+
             $news->update($request->all());
+            return $news;
+        }
+
+        return response()->json([
+            'Post not found'
+        ], 404);
+    }
+
+    /**
+     * Update the specified resource in storage, but with POST method
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function updatePost(Request $request)
+    {
+        $news = News::find($request->id);
+
+        if ($news != null) {
+            $request->validate([
+                'title' => 'required',
+                'content' => 'required'
+            ]);
+
+            // Image upload
+            if ($request->hasFile('image')) {
+                $request->validate([
+                    'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust validation rules as needed
+                ]);
+
+                $image = $request->file('image');
+                $filesize = $request->file('image')->getSize();
+
+                // Generate a unique name for the image
+                $imageName = time() . '.' . $image->getClientOriginalExtension();
+
+                // Move the uploaded image to a storage directory
+                $image->move(public_path('uploads'), $imageName);
+
+                // Create the URL for the uploaded image
+                $imageUrl = asset('uploads/' . $imageName);
+
+                // Remove image from request
+                unset($request['image']);
+
+                // Add image to data array
+                $data['image'] = $imageUrl;
+                $data = array_merge($request->all(), $data);
+            }
+
+            $news->update($data);
+            return $news;
+        }
+
+        return response()->json([
+            'Post not found'
+        ], 404);
+    }
+
+    /**
+     * Update image 
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateImage(Request $request, $id)
+    {
+        $news = News::find($id);
+
+        if ($news != null) {
+            $request->validate([
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust validation rules as needed
+            ]);
+
+            $image = $request->file('image');
+            $filesize = $request->file('image')->getSize();
+
+            // Generate a unique name for the image
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+
+            // Move the uploaded image to a storage directory
+            $image->move(public_path('uploads'), $imageName);
+
+            // Create the URL for the uploaded image
+            $imageUrl = asset('uploads/' . $imageName);
+
+            // Add image to data array
+            $data['image'] = $imageUrl;
+
+            $news->update($data);
             return $news;
         }
 
